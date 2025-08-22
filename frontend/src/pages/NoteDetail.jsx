@@ -45,10 +45,10 @@ const NoteDetail = () => {
 
   };
   const handleSave = async () => {
-    if(!note.title.trim() || !note.content.trim()){
-      toast.error("Please add a title or content")
-      return
-    }
+    // if(!note.title.trim() || !note.content.trim()){
+    //   toast.error("Please add a title or content")
+    //   return
+    // }
 
     setSaving(true)
 

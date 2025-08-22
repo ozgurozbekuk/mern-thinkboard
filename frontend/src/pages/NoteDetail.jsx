@@ -30,41 +30,38 @@ const NoteDetail = () => {
   }, [id]);
 
   const handleDelete = async () => {
-    if(!window.confirm("Are you sure want to delete this note?")) return
+    if (!window.confirm("Are you sure want to delete this note?")) return;
 
     try {
-       await api.delete(`/notes/${id}`)
-       toast.success("Note deleted!")
-       navigate("/")
+      await api.delete(`/notes/${id}`);
+      toast.success("Note deleted!");
+      navigate("/");
     } catch (error) {
-      console.log("Delete error: ", error)
-      toast.error("Failled to delete note.")
-      
+      console.log("Delete error: ", error);
+      toast.error("Failled to delete note.");
     }
-
-
   };
   const handleSave = async () => {
-    if(!note.title.trim() || !note.content.trim()){
-      toast.error("Please add a title or content")
-      return
+    if (!note.title.trim() || !note.content.trim()) {
+      toast.error("Please add a title or content");
+      return;
     }
 
-    setSaving(true)
+    setSaving(true);
 
     try {
-
-      await api.put(`/notes/${id}`,note)
-      toast.success("Note updated successfully!")
-      navigate("/")
-      
+      await api.put(`/notes/${id}`, {
+        title: note.title,
+        content: note.content,
+      });
+      toast.success("Note updated successfully!");
+      navigate("/");
     } catch (error) {
-      console.log("Saving error: ", error)
-      toast.error("Failled to saving note.")
-      
-    }finally{setSaving(false)}
-
-
+      console.log("Saving error: ", error);
+      toast.error("Failled to saving note.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   if (loading) {
@@ -116,13 +113,19 @@ const NoteDetail = () => {
                   placeholder="Write your note here..."
                   className="textarea textarea-bordered h-32"
                   value={note.content}
-                  onChange={(e) => setNote({ ...note, content: e.target.value })}
+                  onChange={(e) =>
+                    setNote({ ...note, content: e.target.value })
+                  }
                 />
               </div>
 
               <div className="card-actions justify-end">
-                <button className="btn btn-primary" disabled={saving} onClick={handleSave}>
-                    {saving ? "Saving..." : "Save Changes"}
+                <button
+                  className="btn btn-primary"
+                  disabled={saving}
+                  onClick={handleSave}
+                >
+                  {saving ? "Saving..." : "Save Changes"}
                 </button>
               </div>
             </div>

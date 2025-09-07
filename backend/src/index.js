@@ -4,6 +4,8 @@ import { connectDb } from "./config/db.js";
 import dotenv from "dotenv";
 import rateLimiter from "./middleware/ratelimiter.js";
 import cors from "cors";
+import helmet from "helmet";
+import { demoGuard } from "./middleware/demoGuard.js";
 import path from "path";
 
 dotenv.config();
@@ -18,6 +20,8 @@ if (process.env.NODE_ENV !== "production"){
     app.use(cors({ origin: "http://localhost:5173" }));
 }
 
+app.use(helmet());
+// app.use(cors({ origin: process.env.ALLOWED_ORIGIN, credentials: true }));
 app.use(express.json());
 
 app.use(rateLimiter);
@@ -27,7 +31,7 @@ app.use(rateLimiter);
 //     console.log(`Request method is : ${req.method} and req url: ${req.url}`)
 //     next()
 // })
-
+app.use(demoGuard);
 app.use("/api/notes", router);
 
 if (process.env.NODE_ENV === "production") {
